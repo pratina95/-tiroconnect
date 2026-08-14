@@ -1,0 +1,84 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: tiroconnect-postgres
+    environment:
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_DB: ${DB_NAME:-tiroconnect}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - tiroconnect-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: tiroconnect-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - tiroconnect-network
+
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    container_name: tiroconnect-backend
+    environment:
+      - NODE_ENV=production
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USERNAME=${DB_USERNAME:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD:-postgres}
+      - DB_NAME=${DB_NAME:-tiroconnect}
+      - JWT_SECRET=${JWT_SECRET:-tiroconnect-secret-key}
+      - FIREBASE_PROJECT_ID=${FIREBASE_PROJECT_ID}
+      - FIREBASE_PRIVATE_KEY=${FIREBASE_PRIVATE_KEY}
+      - FIREBASE_CLIENT_EMAIL=${FIREBASE_CLIENT_EMAIL}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - tiroconnect-network
+
+  admin-dashboard:
+    build:
+      context: ../admin_dashboard
+      dockerfile: Dockerfile
+    container_name: tiroconnect-admin
+    environment:
+      - REACT_APP_API_URL=http://localhost:3000
+    ports:
+      - "3001:80"
+    depends_on:
+      - backend
+    networks:
+      - tiroconnect-network
+
+  nginx:
+    image: nginx:alpine
+    container_name: tiroconnect-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/nginx/ssl
+    depends_on:
+      - backend
+      - admin-dashboard
+    networks:
+      - tiroconnect-network
+
+volumes:
+  postgres_data:
+
+networks:
+  tiroconnect-network:

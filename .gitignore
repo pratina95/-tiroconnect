@@ -1,0 +1,89 @@
+# Flutter / Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+build/
+**/build/
+**/.dart_tool/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+
+# Android
+**/android/.gradle/
+**/android/app/debug/
+**/android/app/profile/
+**/android/app/release/
+**/android/local.properties
+**/android/.idea/
+
+# iOS
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/Flutter/ephemeral/
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/flutter_export_environment.sh
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.jks
+google-services.json
+GoogleService-Info.plist
+
+# Firebase / service account credentials
+service-account*.json
+firebase-adminsdk*.json
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Docker
+docker-compose.override.yml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Backend build output
+dist/
+**/dist/
+
+# Generated output
+flutter_app/*_output.txt
+flutter_app/run_output.txt
+flutter_app/flutter_run_verbose.txt
+
+# Temporary copied files
+copied_files/
+
+# Temporary root-level worker page
+flutter_app/worker_jobs_page.dart
+
+# Flutter generated/debug output
+flutter_app/*_output.txt
+flutter_app/flutter_run_verbose.txt
+
+# Temporary files
+copied_files/
+flutter_app/worker_jobs_page.dart

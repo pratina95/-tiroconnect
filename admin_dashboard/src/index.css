@@ -1,0 +1,9 @@
+/* Minimal global styles required by CRA entry */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+}
+
+/* Tailwind may be used in project; keep placeholder */
+/* Add project-specific styles as needed */
